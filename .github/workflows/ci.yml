@@ -3,8 +3,6 @@ name: Heuristics CI
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 jobs:
   build-and-test:
@@ -21,25 +19,24 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run CLI (Coin)
-        id: coin
+      - name: Run Algorithms (Silent)
         run: |
-          echo "Running Coin Algorithm..."
-          RESULT=$(python -m cli.main coin 99)
+          COIN_RESULT=$(python -m cli.main coin 99)
+          TSP_RESULT=$(python -m cli.main tsp --iterations 5)
 
-          echo "COIN_RESULT<<EOF" >> $GITHUB_ENV
-          echo "$RESULT" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "COIN_RESULT=$COIN_RESULT" >> $GITHUB_ENV
+          echo "TSP_RESULT=$TSP_RESULT" >> $GITHUB_ENV
 
-      - name: Run CLI (TSP)
-        id: tsp
+      - name: Show Final Results
         run: |
-          echo "Running TSP..."
-          RESULT=$(python -m cli.main tsp --iterations 5)
-
-          echo "TSP_RESULT<<EOF" >> $GITHUB_ENV
-          echo "$RESULT" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "=========================="
+          echo " FINAL OUTPUTS"
+          echo "=========================="
+          echo ""
+          echo "Coin Result:"
+          echo "$COIN_RESULT"
+          echo ""
+          echo "TSP Result:"
+          echo "$TSP_RESULT"
