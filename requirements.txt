@@ -2,3 +2,4 @@ click
 pandas
 geopy
 pytest
+json

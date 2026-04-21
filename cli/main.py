@@ -1,7 +1,9 @@
 import click
+from torch import dist
 from heuristics.greedy_coin import greedy_coin
 from heuristics.tsp import run_simulation
 from heuristics.cities import cities
+import json
 
 
 @click.group()
@@ -14,7 +16,7 @@ def cli():
 def coin(amount):
     """Return minimum coins"""
     result = greedy_coin(amount)
-    click.echo(result)
+    click.echo(json.dumps(result))
 
 
 @cli.command()
@@ -24,8 +26,11 @@ def tsp(iterations):
     city_list = list(cities.keys())
     route, dist = run_simulation(city_list, iterations)
 
-    click.echo(f"Best Route: {route}")
-    click.echo(f"Distance: {dist:.2f} km")
+    output = {
+    "route": route,
+    "distance_km": round(dist, 2)
+        }
+    click.echo(json.dumps(output))
 
 
 if __name__ == "__main__":

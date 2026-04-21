@@ -18,19 +18,13 @@ jobs:
           python-version: "3.x"
 
       - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
-      - name: Run Algorithms (Silent)
+      - name: Run Algorithms
         run: |
           COIN_RESULT=$(python -m cli.main coin 99)
           TSP_RESULT=$(python -m cli.main tsp --iterations 5)
 
-          echo "COIN_RESULT=$COIN_RESULT" >> $GITHUB_ENV
-          echo "TSP_RESULT=$TSP_RESULT" >> $GITHUB_ENV
-
-      - name: Show Final Results
-        run: |
           echo "=========================="
           echo " FINAL OUTPUTS"
           echo "=========================="
